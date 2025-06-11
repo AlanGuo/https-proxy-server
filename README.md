@@ -56,12 +56,14 @@ yarn https
 
 ### 4. 测试代理功能
 
-```bash
-# 基本功能测试
-./test-proxy.sh
+启动代理服务器后，可以通过以下方式测试：
 
-# 代理链功能测试
-./test-proxy-chain.sh
+```bash
+# 测试代理是否工作
+curl -k --proxy https://127.0.0.1:10443 https://httpbin.org/ip
+
+# 测试Binance API
+curl -k --proxy https://127.0.0.1:10443 https://api.binance.com/api/v3/ping
 ```
 
 ## 使用方法
@@ -153,11 +155,8 @@ HTTPS_PROXY_PORT=8443 yarn https
 ## 脚本说明
 
 - `generate-cert.sh`: 生成SSL自签名证书
-- `test-proxy.sh`: 测试代理服务器功能
-- `test-proxy-chain.sh`: 测试代理链功能
 - `start-with-proxy.sh`: 带代理链配置的启动脚本
-- `https-proxy.ts`: HTTPS代理服务器主程序
-- `start.ts`: HTTP代理服务器（原版本）
+- `https-server.ts`: HTTPS代理服务器主程序
 
 ## 常见问题
 
@@ -199,6 +198,14 @@ echo $https_proxy
 echo $all_proxy
 ```
 
+### 5. 测试代理功能
+
+```bash
+# 基本测试命令
+curl -k --proxy https://127.0.0.1:10443 https://httpbin.org/ip
+curl -k --proxy https://127.0.0.1:10443 https://api.binance.com/api/v3/ping
+```
+
 ## 代理链工作原理
 
 当设置了上游代理环境变量时，HTTPS代理服务器会：
@@ -223,15 +230,14 @@ echo $all_proxy
 | 代理链 | ✅ 支持 | ✅ 支持 |
 | Binance API | ❌ 可能失败 | ✅ 正常工作 |
 
-## 测试结果
+## 测试示例
 
-运行 `./test-proxy.sh` 可以测试以下API：
+以下是一些常用的API测试示例：
 
-- ✅ Binance API: `https://api.binance.com/api/v3/ping`
-- ✅ HTTPBin: `https://httpbin.org/ip`
-- ✅ GitHub API: `https://api.github.com`
-- ✅ JSONPlaceholder: `https://jsonplaceholder.typicode.com/posts/1`
-- ✅ WebSocket (WSS): `wss://echo.websocket.org`
+- Binance API: `curl -k --proxy https://127.0.0.1:10443 https://api.binance.com/api/v3/ping`
+- HTTPBin: `curl -k --proxy https://127.0.0.1:10443 https://httpbin.org/ip`
+- GitHub API: `curl -k --proxy https://127.0.0.1:10443 https://api.github.com`
+- JSONPlaceholder: `curl -k --proxy https://127.0.0.1:10443 https://jsonplaceholder.typicode.com/posts/1`
 
 ## 安全说明
 
